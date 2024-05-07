@@ -12,9 +12,9 @@ class MyWin(QtWidgets.QWidget, Ui_Form):
         self.setupUi(self)
 
         # Выравнивание
-        self.tableWidget.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeToContents)
+        self.tableWidget.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeToContents) # type: ignore
         self.tableWidget.horizontalHeader().setMinimumSectionSize(0)
-        self.tableWidget.verticalHeader().setSectionResizeMode(QHeaderView.ResizeToContents)
+        self.tableWidget.verticalHeader().setSectionResizeMode(QHeaderView.ResizeToContents) # type: ignore
         self.tableWidget.verticalHeader().setMinimumSectionSize(30)
         
         self.row_count = 1
@@ -25,7 +25,7 @@ class MyWin(QtWidgets.QWidget, Ui_Form):
         # Цикл который заполняет данными таблицу
         for row in self.records:
             # -------------------------- добавление цветных кнопок
-            self.clear_button = QPushButton("Удалить", self)
+            self.clear_button = QPushButton("Удалить", self) # type: ignore
             self.clear_button.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
             self.clear_button.setStyleSheet("QPushButton {\n"
         "    background-color: #fa7f72;\n"
@@ -38,7 +38,7 @@ class MyWin(QtWidgets.QWidget, Ui_Form):
         "    background-color: #D5D4D4;\n"
         "}")
 
-            self.edit_button = QPushButton("Изменить", self)
+            self.edit_button = QPushButton("Изменить", self) # type: ignore
             self.edit_button.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
             self.edit_button.setStyleSheet("QPushButton {\n"
         "    background-color: #00b8ef;\n"
@@ -78,7 +78,7 @@ class MyWin(QtWidgets.QWidget, Ui_Form):
                                                 QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No)
 
         if result == QtWidgets.QMessageBox.No:
-            QMessageBox.information(self, 'Внимание', 'Удаление отменено.')
+            QMessageBox.information(self, 'Внимание', 'Удаление отменено.') # type: ignore
 
         if result == QtWidgets.QMessageBox.Yes:
             row = self.tableWidget.indexAt(button.pos()).row()
@@ -98,7 +98,7 @@ class MyWin(QtWidgets.QWidget, Ui_Form):
 
                 self.tableWidget.removeRow(row)
 
-                QMessageBox.information(self, "Внимание", "Строка удалена!")
+                QMessageBox.information(self, "Внимание", "Строка удалена!") # type: ignore
     
     @QtCore.pyqtSlot()
     def edit_item(self):
@@ -108,7 +108,7 @@ class MyWin(QtWidgets.QWidget, Ui_Form):
                                                 QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No)
 
         if result == QtWidgets.QMessageBox.No:
-            QMessageBox.information(self, 'Внимание', 'Изменение отменено.')
+            QMessageBox.information(self, 'Внимание', 'Изменение отменено.') # type: ignore
 
         if result == QtWidgets.QMessageBox.Yes:
             row = self.tableWidget.indexAt(button.pos()).row()
@@ -127,7 +127,7 @@ class MyWin(QtWidgets.QWidget, Ui_Form):
                 recor = connect_db("""SELECT id FROM ips WHERE ip = INET_ATON('{0}')""".format(i[2]), 'one')
                 connect_db("""UPDATE ips SET ip = INET_ATON('{0}'), Location = '{1}', Yi = '{2}', Gor = '{3}' WHERE id = '{4}'""".format(i[2], i[3], i[4], i[5], recor[0]), 'commit')
 
-                QMessageBox.information(self, "Внимание", "Строка изменена!")
+                QMessageBox.information(self, "Внимание", "Строка изменена!") # type: ignore
 
 if __name__ == '__main__':
     app = QtWidgets.QApplication(sys.argv)
