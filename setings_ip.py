@@ -125,7 +125,7 @@ class MyWin(QtWidgets.QWidget, Ui_Form):
 
             for i in data:
                 recor = connect_db("""SELECT id FROM ips WHERE ip = INET_ATON('{0}')""".format(i[2]), 'one')
-                connect_db("""UPDATE ips SET ip = INET_ATON('{0}'), Location = '{1}', Yi = '{2}', Gor = '{3}' WHERE id = '{4}'""".format(i[2], i[3], i[4], i[5], recor[0], 'commit'))
+                connect_db("""UPDATE ips SET ip = INET_ATON('{0}'), Location = '{1}', Yi = '{2}', Gor = '{3}' WHERE id = '{4}'""".format(i[2], i[3], i[4], i[5], recor[0]), 'commit')
 
                 QMessageBox.information(self, "Внимание", "Строка изменена!")
 
