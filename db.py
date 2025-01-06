@@ -9,22 +9,24 @@ def inet_aton(string):
 
 def connect_db(query, method):
     try:
-        sqlite_connection = sqlite3.connect("DB/new.db")
-        sqlite_connection.create_function('INET_NTOA', 1, inet_ntoa)
-        sqlite_connection.create_function('INET_ATON', 1, inet_aton)
-        cursor = sqlite_connection.cursor()
-        # print("База данных подключена к SQLite")
-        
-        sqlite_select_query = query
-        cursor.execute(sqlite_select_query)
-        if method == 'all':
-            records = cursor.fetchall()
-            return records
-        elif method == 'one':
-            records = cursor.fetchone()
-            return records
-        elif method == 'commit':
-            sqlite_connection.commit()
+        with sqlite3.connect("DB/new.db") as sqlite_connection:
+            sqlite_connection.create_function('INET_NTOA', 1, inet_ntoa)
+            sqlite_connection.create_function('INET_ATON', 1, inet_aton)
+            cursor = sqlite_connection.cursor()
+            cursor.execute(query)
             
+            methods = {
+                'all': cursor.fetchall,
+                'one': cursor.fetchone,
+                'commit': sqlite_connection.commit
+            }
+            
+            if method in methods:
+                return methods[method]()
+            else:
+                raise ValueError(f"Unknown method: {method}")
+                
     except sqlite3.Error as error:
         print("Ошибка при подключении к SQLite", error)
+    except ValueError as ve:
+        print("Ошибка:", ve)
